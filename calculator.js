@@ -32,19 +32,23 @@ function calculate(req, res) {
     }
 
     if (!(Object.is(a, NaN) || Object.is(b, NaN))) {
+      res.writeHead(200, { "Content-Type": "application/json" });
+
       if (operator === "+") {
-        ans = Number(a) + Number(b);
+        ans = a + b;
       } else if (operator === "-") {
-        ans = Number(a) - Number(b);
+        ans = a - b;
       } else if (operator === "*") {
-        ans = Number(a) * Number(b);
+        ans = a * b;
       } else if (operator === "/") {
-        ans = Number(a) / Number(b);
+        ans = a / (b === 0 ? 1 : b);
+        res.write(JSON.stringify({ exception: "Divisor Can not be zero" }));
+        res.end();
+        return;
       } else if (operator === "%") {
-        ans = Number(a) % Number(b);
+        ans = a % b;
       }
 
-      res.writeHead(200, { "Content-Type": "application/json" });
       res.write(JSON.stringify({ message: `Answer is ${ans}` }));
       res.end();
     } else {
