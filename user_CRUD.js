@@ -132,7 +132,7 @@ function deleteUser(req, res) {
       res.write(JSON.stringify({ message: "Please fill Empty fields!!" }));
     } else {
       const findUserIdx = userData.findIndex((user) => user.email === email);
-      if (findUserIdx) {
+      if (findUserIdx != -1) {
         userData.splice(findUserIdx, 1);
         res.writeHead(200, { "Content-Type": "application/json" });
         res.write(JSON.stringify({ message: "user deleted Successfully" }));
