@@ -176,9 +176,18 @@ function getUserByEmail(req, res) {
 function searchUser(req, res) {
   const querySearch = url.parse(req.url, true).query.search;
 
-  const searchedUser = userData.filter((eachUser) =>
-    eachUser.email.includes(querySearch)
-  );
+  // const searchedUser = userData.filter((eachUser) =>
+  //   eachUser.email.includes(querySearch)
+  // );
+
+  const searchedUser = [];
+  for (const eachUser of userData) {
+    const regexSearch = new RegExp(querySearch + ".");
+
+    if (regexSearch.test(eachUser.email)) {
+      searchedUser.push(eachUser);
+    }
+  }
 
   if (searchedUser.length > 0) {
     res.writeHead(200, { "Content-Type": "application/json" });
