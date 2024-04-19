@@ -20,6 +20,12 @@ const server = http.createServer(function (req, res) {
     "email" in parsedUrl.query
   ) {
     getUserByEmail(req, res);
+  } else if (
+    reqMethod === "GET" &&
+    parsedUrl.pathname === "/user" &&
+    "search" in parsedUrl.query
+  ) {
+    searchUser(req, res);
   } else if (reqMethod === "PATCH" && reqURL === "/user") {
     updateUser(req, res);
   } else if (reqMethod === "DELETE" && reqURL === "/user") {
@@ -158,6 +164,26 @@ function getUserByEmail(req, res) {
     res.writeHead(200, { "Content-Type": "application/json" });
     res.write(
       JSON.stringify({ message: "user deleted Successfully", findUser })
+    );
+  } else {
+    res.writeHead(404, { "Content-Type": "application/json" });
+    res.write(JSON.stringify({ message: "user not found" }));
+  }
+
+  res.end();
+}
+
+function searchUser(req, res) {
+  const querySearch = url.parse(req.url, true).query.search;
+
+  const searchedUser = userData.filter((eachUser) =>
+    eachUser.email.startsWith(querySearch)
+  );
+
+  if (searchedUser.length > 0) {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.write(
+      JSON.stringify({ message: "user search Successfully", searchedUser })
     );
   } else {
     res.writeHead(404, { "Content-Type": "application/json" });
