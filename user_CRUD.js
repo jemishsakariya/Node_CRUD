@@ -177,7 +177,7 @@ function searchUser(req, res) {
   const querySearch = url.parse(req.url, true).query.search;
 
   const searchedUser = userData.filter((eachUser) =>
-    eachUser.email.startsWith(querySearch)
+    eachUser.email.includes(querySearch)
   );
 
   if (searchedUser.length > 0) {
