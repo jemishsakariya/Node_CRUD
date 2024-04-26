@@ -1,7 +1,11 @@
 const EventEmitter = require("events");
 const { prependListener, prependOnceListener } = require("process");
 
-const eventEmitter = new EventEmitter();
+// const eventEmitter = new EventEmitter();
+
+class MyEmitter extends EventEmitter {}
+
+const eventEmitter = new MyEmitter();
 
 eventEmitter.on("event", function f1() {
   //event is registered
@@ -26,7 +30,7 @@ eventEmitter.on("bar", function () {
 
 // By default you can register events with the same event name up to 10 times
 
-// eventEmitter.emit("event"); // Event is emitted this is called all on method registered with name of event synchronly
+eventEmitter.emit("event"); // Event is emitted this is called all on method registered with name of event synchronly
 
 eventEmitter.addListener("message", fun1); // this is also same as on method
 function fun1() {
